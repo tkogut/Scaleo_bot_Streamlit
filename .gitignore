@@ -30,6 +30,7 @@ __pycache__/
 models/
 data/
 dane/
+indexes/
 
 # Ignoruj pliki systemowe
 .DS_Store

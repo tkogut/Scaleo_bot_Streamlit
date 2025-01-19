@@ -1,9 +1,11 @@
 import streamlit as st
-rom llama_index.core import VectorStoreIndex, Document, Settings
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from typing import List
 import os
 import logging
+from llama_index.core import VectorStoreIndex, Document, Settings
+from llama_index.llms.huggingface import HuggingFaceLLM
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 # Konfiguracja logowania
 logging.basicConfig(level=logging.INFO)
@@ -16,8 +18,12 @@ st.set_page_config(page_title="Chatbot z własnymi danymi", page_icon="🤖")
 model_path = "C:/Users/tkogut/.vscode/models/llama-3.2-1B-local"
 
 # Inicjalizacja tokenizera i modelu
-tokenizer = AutoTokenizer.from_pretrained(model_path)
-model = AutoModelForCausalLM.from_pretrained(model_path)
+try:
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    model = AutoModelForCausalLM.from_pretrained(model_path)
+    logger.info("Model i tokenizer załadowane pomyślnie.")
+except Exception as e:
+    logger.error(f"Błąd podczas ładowania modelu lub tokenizera: {e}")
 
 # Inicjalizacja modelu HuggingFace
 llm = HuggingFaceLLM(
@@ -27,6 +33,12 @@ llm = HuggingFaceLLM(
     max_new_tokens=256,
     generate_kwargs={"temperature": 0.7, "do_sample": True},
 )
+
+# Ustawienia dla LlamaIndex
+Settings.llm = None  # Wyłącz domyślny model językowy (OpenAI)
+
+# Define the embedding model
+embed_model = HuggingFaceEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 # Ścieżka do folderu z danymi
 data_path = "C:/Users/tkogut/.vscode/Scaleo_bot_Streamlit/dane"
@@ -54,15 +66,17 @@ def load_data():
             logger.info(f"Wczytano dokument z {file_path}")
 
     # Tworzenie indeksu
-    service_context = ServiceContext.from_defaults(llm=llm)
-    index = VectorStoreIndex.from_documents(documents, service_context=service_context)
+    index = VectorStoreIndex.from_documents(documents, embed_model=embed_model)
     logger.info("Indeks LlamaIndex załadowany pomyślnie.")
     return index
 
 index = load_data()
 
 # Inicjalizacja chat engine
-chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True)
+chat_engine = index.as_chat_engine(chat_mode="context",
+    system_prompt=(
+        "Jesteś botem, który odpowiada na pytania na podstawie dostarczonych danych o działaniu automatycznego systemu obsługi wagi."
+    ),)
 
 # Interfejs użytkownika
 st.title("Chatbot z własnymi danymi 🤖")
