@@ -1,0 +1,48 @@
+# Ignoruj środowisko wirtualne
+venv/
+.venv/
+env/
+
+# Ignoruj pliki Pythona
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignoruj pliki cache i logi
+.mypy_cache/
+.pytest_cache/
+.vscode/
+.idea/
+*.log
+*.sqlite3
+
+# Ignoruj pliki środowiskowe
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Ignoruj pliki generowane przez Streamlit
+.streamlit/
+
+# Ignoruj pliki modeli i danych (jeśli nie chcesz ich udostępniać)
+models/
+data/
+dane/
+
+# Ignoruj pliki systemowe
+.DS_Store
+Thumbs.db
+
+# Ignoruj pliki instalacyjne Pythona
+*.egg-info/
+dist/
+build/
+
+# Ignoruj pliki Jupyter Notebook
+.ipynb_checkpoints/
+
+# Ignoruj pliki IDE
+*.swp
+*.swo
