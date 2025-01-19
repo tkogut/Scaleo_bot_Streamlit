@@ -38,7 +38,7 @@ llm = HuggingFaceLLM(
 Settings.llm = None  # Wyłącz domyślny model językowy (OpenAI)
 
 # Define the embedding model
-embed_model = HuggingFaceEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
+embed_model = HuggingFaceEmbedding(model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 
 # Ścieżka do folderu z danymi
 data_path = "C:/Users/tkogut/.vscode/Scaleo_bot_Streamlit/dane"
@@ -76,6 +76,9 @@ index = load_data()
 chat_engine = index.as_chat_engine(chat_mode="context",
     system_prompt=(
         "Jesteś botem specjalizującym się w automatycznych systemach obsługi wagi. Odpowiadasz na pytania dokładnie, bazując na dostarczonych danych i dokumentacjach systemu."
+        " Odpowiadaj wyłącznie na podstawie dostarczonych informacji. "
+        "Jeśli zapytanie jest niejasne lub wykracza poza podane dane, poproś o doprecyzowanie. "
+        "Udzielaj odpowiedzi zwięzłych i bezpośrednich."
     ),)
 
 # Interfejs użytkownika

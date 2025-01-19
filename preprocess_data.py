@@ -6,7 +6,7 @@ from llama_index.core import Settings
 
 def preprocess_data():
     # Ustaw model embeddings na HuggingFaceEmbedding
-    embed_model = HuggingFaceEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
+    embed_model = HuggingFaceEmbedding(model_name="paraphrase-multilingual-MiniLM-L12-v2")
 
     # Ustaw model embeddings w Settings
     Settings.embed_model = embed_model
