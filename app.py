@@ -75,7 +75,7 @@ index = load_data()
 # Inicjalizacja chat engine
 chat_engine = index.as_chat_engine(chat_mode="context",
     system_prompt=(
-        "Jesteś botem, który odpowiada na pytania na podstawie dostarczonych danych o działaniu automatycznego systemu obsługi wagi."
+        "Jesteś botem specjalizującym się w automatycznych systemach obsługi wagi. Odpowiadasz na pytania dokładnie, bazując na dostarczonych danych i dokumentacjach systemu."
     ),)
 
 # Interfejs użytkownika
