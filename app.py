@@ -6,6 +6,7 @@ from llama_index.core import VectorStoreIndex, Document, Settings
 from llama_index.llms.huggingface import HuggingFaceLLM
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+import torch  # Dodano import torch
 
 # Konfiguracja logowania
 logging.basicConfig(level=logging.INFO)
@@ -14,13 +15,21 @@ logger = logging.getLogger(__name__)
 # Konfiguracja Streamlit
 st.set_page_config(page_title="Chatbot z własnymi danymi", page_icon="🤖")
 
+# Sprawdź, czy GPU jest dostępne
+if torch.cuda.is_available():
+    device = torch.device("cuda")  # Użyj GPU
+    logger.info("GPU jest dostępne!")
+else:
+    device = torch.device("cpu")  # Użyj CPU
+    logger.info("GPU nie jest dostępne, używam CPU.")
+
 # Ścieżka do lokalnego modelu Llama
 model_path = "C:/Users/tkogut/.vscode/models/llama-3.2-1B-local"
 
 # Inicjalizacja tokenizera i modelu
 try:
     tokenizer = AutoTokenizer.from_pretrained(model_path)
-    model = AutoModelForCausalLM.from_pretrained(model_path)
+    model = AutoModelForCausalLM.from_pretrained(model_path).to(device)  # Przekieruj model na GPU
     logger.info("Model i tokenizer załadowane pomyślnie.")
 except Exception as e:
     logger.error(f"Błąd podczas ładowania modelu lub tokenizera: {e}")
