@@ -1,6 +1,7 @@
 import streamlit as st
-from llama_index.core import VectorStoreIndex, Document, ServiceContext
+from llama_index.core import VectorStoreIndex, Document, ServiceContext, SimpleDirectoryReader
 from llama_index.llms.huggingface import HuggingFaceLLM
+from 
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import os
 import logging
