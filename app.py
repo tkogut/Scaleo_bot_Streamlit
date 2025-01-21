@@ -1,7 +1,7 @@
 import streamlit as st
 from llama_index.core import VectorStoreIndex, Document, ServiceContext, SimpleDirectoryReader
 from llama_index.llms.huggingface import HuggingFaceLLM
-from llama_index.prompts.prompts import SimpleInpitPrompt
+from llama_index.core.prompts.prompts import SimpleInputPrompt
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import os
 import logging
@@ -44,6 +44,7 @@ def load_data():
         raise ValueError(f"Brak plików w folderze {data_path}.")
 
     logger.info(f"Zawartość folderu '{data_path}': {files}")
+
 
     # Wczytanie dokumentów
     documents = []
